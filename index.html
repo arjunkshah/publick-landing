@@ -112,7 +112,9 @@
   @keyframes drift{0%,100%{translate:0 0}50%{translate:0 -7px}}
 
   /* ===== PRODUCT BAND ===== */
-  .band{background:var(--purple);position:relative;overflow:hidden;padding:72px 0}
+  .band{position:relative;overflow:hidden;padding:0;line-height:0}
+  .band-img{display:block;width:100%;height:auto}
+  .band .grid-tex,.band .blob{display:none}
   .band .grid-tex{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.12) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.12) 1px,transparent 1px);background-size:46px 46px;opacity:.5}
   .band .blob{position:absolute;border-radius:0}
   .band .b-green{width:520px;height:520px;background:var(--green);left:-160px;top:-120px;border-radius:50%;opacity:.92}
@@ -373,31 +375,7 @@
 
 <!-- ===== PRODUCT BAND ===== -->
 <section class="band">
-  <div class="grid-tex"></div>
-  <span class="blob b-green"></span>
-  <span class="blob b-cyan"></span>
-  <span class="blob b-orange"></span>
-  <div class="band-in">
-    <div class="pcard reveal">
-      <div class="pc-bar"><img class="lg" src="assets/publick-icon.png" alt=""><span class="ttl">My Chances</span><span class="tools"><i></i><i></i><i></i></span></div>
-      <div class="pc-body">
-        <div class="pc-h"><span class="t">10 schools · balanced list</span><span class="chip">Profile strength <b data-count="82">0</b></span></div>
-        <div class="row"><span class="sw" style="background:#D8344A">R</span><div class="bd"><div class="n">MIT</div><div class="s">Reach · +80 SAT → high reach</div></div><span class="pc" style="color:#D8344A" data-count="11" data-suffix="%">0</span></div>
-        <div class="row"><span class="sw" style="background:#B4791C">M</span><div class="bd"><div class="n">UC Berkeley</div><div class="s">Match · strong CS fit</div></div><span class="pc" style="color:#B4791C" data-count="47" data-suffix="%">0</span></div>
-        <div class="row"><span class="sw" style="background:#0C8A5E">S</span><div class="bd"><div class="n">UMass Amherst</div><div class="s">Safety · GPA above median</div></div><span class="pc" style="color:#0C8A5E" data-count="84" data-suffix="%">0</span></div>
-        <div class="pc-note"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 2v4M12 18v4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M2 12h4M18 12h4M4.9 19.1l2.8-2.8M16.3 7.7l2.8-2.8"/></svg><span class="tx"><b>Publick:</b> your list has 2 safeties. Add 1 more to keep it healthy.</span></div>
-      </div>
-    </div>
-    <div class="acard reveal" data-d="1">
-      <div class="ac-msg">
-        <div class="ac-from"><img class="av" src="assets/publick-icon.png" alt=""> Publick AI</div>
-        <div class="ac-txt">Here’s your plan for this week. Berkeley moved from reach to match — your essay draft pushed your profile strength to 82.</div>
-        <span class="ac-pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M9 12l2 2 4-4"/></svg> Draft Common App essay · 40%</span>
-        <span class="ac-pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V5M4 19h16M8 16v-5M12 16V8M16 16v-7"/></svg> SAT drill: algebra · 20 min</span>
-      </div>
-      <div class="ac-input">Ask Publick anything…<span class="send"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M13 5l7 7-7 7"/></svg></span></div>
-    </div>
-  </div>
+  <img class="band-img reveal" src="assets/dashboard.png" alt="Publick — My Chances dashboard showing reach, match, safety, and this week columns">
 </section>
 
 <!-- ===== STATEMENT ===== -->

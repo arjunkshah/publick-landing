@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Publick — The AI college suite that gets you in</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Jost:wght@400;500;600;700&family=Fragment+Mono:ital@0;1&display=swap" rel="stylesheet">
+<link rel="icon" type="image/png" href="assets/publick-icon.png">
+<link rel="apple-touch-icon" href="assets/publick-apple-icon.png">
+<meta name="theme-color" content="#0339FB">
+<style>
+  :root{
+    --cream:#FBF6E7;
+    --cream-2:#F6F0DC;
+    --paper:#FFFFFF;
+    --soft:#F4F4F2;
+    --ink:#0B0B0C;
+    --ink-2:#3a3a3e;
+    --muted:#6A6A70;
+    --line:#ECE7D6;
+    --line-2:#ECECEC;
+
+    --brand:#0339FB;            /* Publick brand blue (from their logo) */
+    --purple:#0339FB;           /* primary accent now matches the brand mark */
+    --purple-hi:#AFC0FF;        /* light brand-blue highlighter */
+    --green:#2FD08A;
+    --green-hi:#7CE9B8;
+    --yellow:#FFD23F;
+    --orange:#FF6A2C;
+    --cyan:#36CFE6;
+    --pink:#FF7FB0;
+    --dark:#101012;
+
+    --maxw:1180px;
+    --ease:cubic-bezier(.22,.7,.2,1);
+    --e-quart:cubic-bezier(.25,1,.5,1);
+    --e-quint:cubic-bezier(.22,1,.36,1);
+    --e-expo:cubic-bezier(.16,1,.3,1);
+    --serif:'Lora',Georgia,'Times New Roman',serif;
+    --sans:'Jost',system-ui,-apple-system,sans-serif;
+    --mono:'Fragment Mono',ui-monospace,monospace;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+  body{font-family:var(--sans);background:var(--paper);color:var(--ink);font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  a{color:inherit;text-decoration:none}
+  img,svg{display:block}
+  .container{max-width:var(--maxw);margin:0 auto;padding:0 28px}
+  h1,h2,h3,h4{font-family:var(--serif);font-weight:400;letter-spacing:-.01em;line-height:1.04;color:var(--ink);text-wrap:balance}
+
+  /* highlight marker — wipes in like a real highlighter */
+  .hl{display:inline-block;padding:.02em .26em;border-radius:10px;color:var(--ink);background-repeat:no-repeat;background-position:left center;background-size:0% 100%}
+  .hl.p{--hlc:var(--purple-hi);background-image:linear-gradient(var(--hlc),var(--hlc));transform:rotate(-1.2deg)}
+  .hl.g{--hlc:var(--green-hi);background-image:linear-gradient(var(--hlc),var(--hlc));transform:rotate(1deg)}
+  .hl.lit{animation:hlWipe .55s var(--e-quint) both}
+  .hl.p.lit{animation-delay:.62s}
+  .hl.g.lit{animation-delay:.92s}
+  @keyframes hlWipe{from{background-size:0% 100%}to{background-size:100% 100%}}
+
+  /* buttons */
+  .btn{display:inline-flex;align-items:center;gap:9px;font-family:var(--sans);font-size:15px;font-weight:600;padding:13px 22px;border-radius:10px;cursor:pointer;border:2px solid transparent;transition:transform .25s var(--ease),background .25s,box-shadow .25s;white-space:nowrap}
+  .btn svg{width:16px;height:16px;transition:transform .3s var(--e-quart)}
+  .btn:hover svg{transform:translateX(4px)}
+  .btn:active{transform:translateY(0) scale(.96)}
+  .btn-dark{background:var(--ink);color:#fff}
+  .btn-dark:hover{transform:translateY(-2px);box-shadow:0 12px 26px rgba(0,0,0,.2)}
+  .btn-ghost{background:transparent;color:var(--ink);border-color:var(--ink)}
+  .btn-ghost:hover{background:var(--ink);color:#fff;transform:translateY(-2px)}
+
+  /* ===== NAV ===== */
+  .nav{position:sticky;top:0;z-index:60;background:var(--cream);border-bottom:1px solid var(--line);transition:box-shadow .35s var(--e-quart),background .35s}
+  .nav.scrolled{box-shadow:0 8px 26px rgba(20,8,60,.07);background:rgba(251,246,231,.82);backdrop-filter:blur(12px) saturate(1.2);-webkit-backdrop-filter:blur(12px) saturate(1.2)}
+  .nav-in{max-width:var(--maxw);margin:0 auto;padding:14px 28px;display:flex;align-items:center;gap:34px;transition:padding .35s var(--e-quart)}
+  .nav.scrolled .nav-in{padding:9px 28px}
+  .brand{font-family:var(--sans);font-weight:700;font-size:25px;letter-spacing:-.03em;display:flex;align-items:center;gap:8px}
+  .brand .logo{width:28px;height:28px;object-fit:contain;flex:none}
+  .nav-links{display:flex;gap:24px;align-items:center}
+  .nav-links a{font-size:15px;color:var(--ink-2);font-weight:500;display:inline-flex;align-items:center;gap:5px}
+  .nav-links a:hover{color:var(--ink)}
+  .nav-links .car{width:9px;height:9px;opacity:.5}
+  .nav-right{margin-left:auto;display:flex;align-items:center;gap:20px}
+  .nav-right a{font-size:15px;font-weight:500;color:var(--ink-2)}
+  .nav-right a:hover{color:var(--ink)}
+  .nav-cta{background:var(--ink);color:#fff!important;padding:10px 18px;border-radius:9px;font-weight:600}
+  .nav-cta:hover{background:#000}
+
+  /* ===== HERO ===== */
+  .hero{background:var(--cream);position:relative;text-align:center;padding:96px 0 120px;overflow:hidden}
+  .hero .eyebrow{display:inline-flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--line);border-radius:999px;padding:6px 14px;font-size:13px;font-weight:600;color:var(--ink-2);margin-bottom:30px}
+  .hero .eyebrow .nw{font-family:var(--mono);font-size:10px;background:var(--purple-hi);color:#3a2a8a;padding:2px 7px;border-radius:6px;font-weight:700}
+  h1.hero-title{font-size:clamp(44px,7.2vw,88px);line-height:1.02;letter-spacing:-.02em;max-width:14ch;margin:0 auto;font-weight:400}
+  .hero p.sub{font-size:19px;color:var(--muted);max-width:54ch;margin:26px auto 0;line-height:1.55}
+  .hero .cta-row{display:flex;gap:14px;justify-content:center;margin-top:36px}
+  /* doodles */
+  .doodle{position:absolute;pointer-events:none;color:var(--ink);opacity:.85}
+  .d1{top:120px;left:7%;width:70px;transform:rotate(-8deg)}
+  .d2{top:90px;right:8%;width:90px;color:var(--orange);transform:rotate(10deg)}
+  .d3{bottom:150px;left:11%;width:54px;color:var(--purple)}
+  .d4{bottom:120px;right:12%;width:64px;color:var(--green);transform:rotate(-14deg)}
+  /* hand-drawn stroke-on effect */
+  .doodle path{stroke-dasharray:300;stroke-dashoffset:300;animation:draw 1.1s var(--e-quint) forwards}
+  .d1 path{animation-delay:.45s}
+  .d2 path{animation-delay:.65s}
+  .d3 path{animation-delay:.85s}
+  .d4 path{animation-delay:1.05s}
+  @keyframes draw{to{stroke-dashoffset:0}}
+  /* idle drift so the doodles feel alive after drawing */
+  .doodle{animation:drift 7s ease-in-out 2s infinite}
+  .d2,.d4{animation-duration:8.5s;animation-delay:2.4s}
+  @keyframes drift{0%,100%{translate:0 0}50%{translate:0 -7px}}
+
+  /* ===== PRODUCT BAND ===== */
+  .band{background:var(--purple);position:relative;overflow:hidden;padding:72px 0}
+  .band .grid-tex{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.12) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.12) 1px,transparent 1px);background-size:46px 46px;opacity:.5}
+  .band .blob{position:absolute;border-radius:0}
+  .band .b-green{width:520px;height:520px;background:var(--green);left:-160px;top:-120px;border-radius:50%;opacity:.92}
+  .band .b-orange{width:0;height:0;border-left:200px solid transparent;border-right:200px solid transparent;border-bottom:330px solid var(--orange);right:-40px;bottom:-90px;transform:rotate(18deg);opacity:.92}
+  .band .b-cyan{width:230px;height:230px;background:var(--cyan);right:18%;top:30px;transform:rotate(20deg);opacity:.9}
+  .band-in{position:relative;z-index:2;max-width:1080px;margin:0 auto;padding:0 28px;display:grid;grid-template-columns:1.25fr .85fr;gap:26px;align-items:start}
+
+  /* product card */
+  .pcard{background:#fff;border-radius:18px;box-shadow:0 30px 60px rgba(20,8,60,.28);overflow:hidden;border:1px solid rgba(0,0,0,.04)}
+  .pc-bar{display:flex;align-items:center;gap:10px;padding:13px 16px;border-bottom:1px solid var(--line-2)}
+  .pc-bar .lg{width:24px;height:24px;object-fit:contain;flex:none}
+  .pc-bar .ttl{font-weight:700;font-size:14px}
+  .pc-bar .tools{margin-left:auto;display:flex;gap:7px}
+  .pc-bar .tools i{width:13px;height:13px;border-radius:4px;background:#eee;display:block}
+  .pc-body{padding:16px 18px}
+  .pc-h{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+  .pc-h .t{font-weight:700;font-size:14px}
+  .pc-h .chip{font-family:var(--mono);font-size:10.5px;background:var(--soft);border:1px solid var(--line-2);border-radius:999px;padding:3px 9px;color:var(--muted)}
+  .row{display:flex;align-items:center;gap:11px;padding:11px;border:1px solid var(--line-2);border-radius:12px;margin-bottom:9px}
+  .row .sw{width:34px;height:34px;border-radius:9px;flex:none;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;color:#fff}
+  .row .bd{flex:1;min-width:0}
+  .row .bd .n{font-weight:700;font-size:13.5px}
+  .row .bd .s{font-size:11.5px;color:var(--muted);font-family:var(--mono)}
+  .row .pc{font-weight:700;font-size:17px;letter-spacing:-.02em}
+  .pc-note{display:flex;gap:9px;align-items:flex-start;background:#F3F0FF;border:1px solid #E3DBFF;border-radius:11px;padding:10px 12px;margin-top:4px}
+  .pc-note .ic{width:18px;height:18px;color:var(--purple);flex:none;margin-top:1px}
+  .pc-note .tx{font-size:12px;color:#43386e;line-height:1.4}
+
+  /* AI assistant mini card */
+  .acard{background:#fff;border-radius:18px;box-shadow:0 30px 60px rgba(20,8,60,.28);overflow:hidden;border:1px solid rgba(0,0,0,.04)}
+  .ac-msg{padding:14px 16px;border-bottom:1px solid var(--line-2)}
+  .ac-from{display:flex;align-items:center;gap:8px;font-weight:700;font-size:13px;margin-bottom:7px}
+  .ac-from .av{width:22px;height:22px;object-fit:contain;flex:none}
+  .ac-txt{font-size:13px;color:var(--ink-2);line-height:1.5}
+  .ac-pill{display:inline-flex;align-items:center;gap:7px;background:var(--soft);border:1px solid var(--line-2);border-radius:10px;padding:8px 11px;font-size:12.5px;font-weight:600;margin-top:9px}
+  .ac-pill svg{width:14px;height:14px;color:var(--purple)}
+  .ac-input{display:flex;align-items:center;gap:8px;padding:12px 14px;color:var(--muted);font-size:13px}
+  .ac-input .send{margin-left:auto;width:28px;height:28px;border-radius:8px;background:var(--ink);color:#fff;display:flex;align-items:center;justify-content:center}
+  .ac-input .send svg{width:14px;height:14px}
+
+  /* ===== STATEMENT ===== */
+  .statement{padding:120px 0;text-align:center;background:var(--paper)}
+  .statement h2{font-size:clamp(32px,4.6vw,56px);max-width:18ch;margin:0 auto;line-height:1.08}
+
+  /* ===== FEATURE ROWS ===== */
+  .frow{display:grid;grid-template-columns:1fr 1fr;gap:0;align-items:stretch}
+  .frow + .frow{margin-top:26px}
+  .f-text{background:var(--soft);padding:56px 56px;display:flex;flex-direction:column;justify-content:center}
+  .f-vis{position:relative;overflow:hidden;min-height:420px;display:flex;align-items:center;justify-content:center}
+  .frow.rev .f-text{order:2}
+  .glyph{width:46px;height:46px;border-radius:11px;display:flex;align-items:center;justify-content:center;margin-bottom:22px}
+  .glyph svg{width:24px;height:24px;color:#fff}
+  .f-text h3{font-size:clamp(26px,3vw,34px);margin-bottom:14px;max-width:16ch}
+  .f-text p{color:var(--muted);font-size:16px;max-width:42ch}
+  /* colored visual backgrounds */
+  .vis-purple{background:var(--purple)}
+  .vis-green{background:var(--green)}
+  .vis-yellow{background:var(--yellow)}
+  .vis-cyan{background:var(--cyan)}
+  .vis-tex{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.14) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.14) 1px,transparent 1px);background-size:40px 40px}
+  .vis-shape{position:absolute}
+  .mini{position:relative;z-index:2;width:88%;max-width:430px;background:#fff;border-radius:15px;box-shadow:0 24px 50px rgba(0,0,0,.22);padding:16px 18px;border:1px solid rgba(0,0,0,.05)}
+  .mini .mh{display:flex;align-items:center;justify-content:space-between;margin-bottom:13px}
+  .mini .mh .t{font-weight:700;font-size:13.5px}
+  .mini .mh .c{font-family:var(--mono);font-size:10.5px;color:var(--muted)}
+  .bar-row{display:flex;align-items:center;gap:10px;margin-bottom:11px}
+  .bar-row .lbl{font-size:12px;font-weight:600;width:78px;flex:none}
+  .bar-row .track{flex:1;height:8px;border-radius:99px;background:#EFEFEF;overflow:hidden}
+  .bar-row .track span{display:block;height:100%;width:0;border-radius:99px;transition:width 1s var(--ease)}
+  .in-view .bar-row .track span{width:var(--w)}
+  .bar-row .v{font-size:12.5px;font-weight:700;font-family:var(--mono);width:42px;text-align:right;flex:none}
+  .ring-wrap{display:flex;align-items:center;gap:18px}
+  .ring{width:96px;height:96px;border-radius:50%;flex:none;background:conic-gradient(var(--green) 0 82%,#EDEDED 82% 100%);display:flex;align-items:center;justify-content:center;position:relative}
+  .ring::after{content:"";position:absolute;inset:11px;background:#fff;border-radius:50%}
+  .ring .num{position:relative;z-index:2;font-weight:700;font-size:26px;letter-spacing:-.02em}
+  .ring-meta .t{font-weight:700;font-size:14px}
+  .ring-meta .s{font-size:12px;color:var(--muted)}
+  .tags{display:flex;flex-wrap:wrap;gap:7px;margin-top:12px}
+  .tag{font-size:11px;font-weight:600;padding:4px 10px;border-radius:999px}
+  .tag.ok{background:#E2F8EE;color:#0c8a5e}
+  .tag.warn{background:#FFF1DC;color:#b4791c}
+  .sync{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--line-2)}
+  .sync:last-child{border-bottom:0}
+  .sync .ic{width:30px;height:30px;border-radius:8px;flex:none;display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px;font-weight:700}
+  .sync .nm{font-weight:600;font-size:13px;flex:1}
+  .sync .st{font-family:var(--mono);font-size:11px;color:var(--green);font-weight:600}
+
+  /* ===== SUITE GRID ===== */
+  .suite{padding:110px 0 90px;background:var(--paper)}
+  .suite .head{text-align:center;max-width:740px;margin:0 auto 18px}
+  .suite .head h2{font-size:clamp(30px,4.2vw,50px);max-width:20ch;margin:0 auto}
+  .suite .head p{color:var(--muted);max-width:58ch;margin:18px auto 0;font-size:17px}
+  .grid6{display:grid;grid-template-columns:repeat(3,1fr);gap:26px;margin-top:54px}
+  .gcard .shot{height:180px;border-radius:13px;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;margin-bottom:18px}
+  .gcard .shot .glabel{position:relative;z-index:2;background:#fff;border-radius:10px;box-shadow:0 14px 30px rgba(0,0,0,.16);padding:11px 14px;font-size:12.5px;font-weight:700;display:flex;align-items:center;gap:9px;max-width:80%}
+  .gcard .shot .glabel .gi{width:26px;height:26px;border-radius:7px;flex:none;display:flex;align-items:center;justify-content:center;color:#fff}
+  .gcard .shot .glabel .gi svg{width:15px;height:15px}
+  .gcard{transition:transform .45s var(--e-quart)}
+  .gcard .shot{transition:box-shadow .45s var(--e-quart)}
+  .gcard .shot .glabel{transition:transform .45s var(--e-quart),box-shadow .45s}
+  .gcard .shot .vis-tex{transition:transform .9s var(--e-quart)}
+  .gcard:hover{transform:translateY(-7px)}
+  .gcard:hover .shot{box-shadow:0 22px 40px rgba(20,8,60,.16)}
+  .gcard:hover .shot .glabel{transform:translateY(-5px) scale(1.04);box-shadow:0 20px 38px rgba(0,0,0,.22)}
+  .gcard:hover .shot .vis-tex{transform:scale(1.08) translate(-6px,-6px)}
+  .gcard h3{font-size:22px;margin-bottom:9px}
+  .gcard p{color:var(--muted);font-size:15px;line-height:1.5}
+
+  /* ===== COMPLIANCE ===== */
+  .comply{padding:110px 0 0;text-align:center;background:var(--paper)}
+  .comply h2{font-size:clamp(30px,4.4vw,52px);max-width:20ch;margin:0 auto}
+  .icons4{display:grid;grid-template-columns:repeat(4,1fr);gap:30px;margin:64px auto 0;max-width:920px}
+  .ic4 .art{width:96px;height:96px;border-radius:16px;margin:0 auto 18px;position:relative;display:flex;align-items:center;justify-content:center;animation:bob 4.5s ease-in-out infinite}
+  .ic4:nth-child(2) .art{animation-delay:.5s;animation-duration:5s}
+  .ic4:nth-child(3) .art{animation-delay:1s;animation-duration:4.2s}
+  .ic4:nth-child(4) .art{animation-delay:1.5s;animation-duration:5.3s}
+  .ic4 .art svg{width:46px;height:46px}
+  @keyframes bob{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-9px) rotate(-2deg)}}
+  .ic4 p{font-size:14.5px;color:var(--ink-2);max-width:20ch;margin:0 auto;line-height:1.45}
+  .trust{margin-top:78px;background:var(--soft);border-top:1px solid var(--line-2);border-bottom:1px solid var(--line-2)}
+  .trust-in{max-width:var(--maxw);margin:0 auto;padding:26px 28px;display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+  .trust-in .lab{font-family:var(--serif);font-size:19px}
+  .trust-badges{margin-left:auto;display:flex;gap:14px;flex-wrap:wrap}
+  .badge{font-family:var(--mono);font-size:11px;font-weight:600;color:var(--ink-2);background:#fff;border:1px solid var(--line-2);border-radius:999px;padding:7px 13px}
+
+  /* ===== INTEGRATIONS ===== */
+  .integ{padding:110px 0;text-align:center;background:var(--paper);overflow:hidden}
+  .integ h2{font-size:clamp(30px,4.4vw,52px);max-width:18ch;margin:0 auto}
+  .integ p{color:var(--muted);max-width:56ch;margin:18px auto 0;font-size:17px}
+  .marquee{margin-top:60px;display:flex;gap:34px;align-items:center;width:max-content;animation:scroll 26s linear infinite}
+  .marquee:hover{animation-play-state:paused}
+  .mwrap{position:relative;mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
+  @keyframes scroll{to{transform:translateX(-50%)}}
+  .ilogo{flex:none;height:96px;padding:0 26px;background:#fff;border:1px solid var(--line);border-radius:14px;display:flex;align-items:center;justify-content:center;gap:12px;transform:rotate(-1deg);transition:transform .45s var(--e-quart),box-shadow .45s,border-color .45s}
+  .ilogo:nth-child(even){transform:rotate(1.4deg)}
+  .ilogo:hover{transform:rotate(0) translateY(-5px);box-shadow:0 18px 38px rgba(20,8,60,.1);border-color:transparent}
+  .ilogo .lmark{width:40px;height:40px;border-radius:11px;display:flex;align-items:center;justify-content:center;flex:none}
+  .ilogo .lmark svg{width:23px;height:23px;color:#fff}
+  .ilogo .lname{font-family:var(--sans);font-weight:700;font-size:18px;letter-spacing:-.015em;color:var(--ink);white-space:nowrap}
+
+  /* ===== FINAL CTA ===== */
+  .final{padding:110px 0 130px;text-align:center;background:var(--paper)}
+  .final h2{font-size:clamp(34px,5vw,62px);max-width:16ch;margin:0 auto}
+  .final p{color:var(--muted);max-width:50ch;margin:22px auto 0;font-size:18px}
+  .final .cta-row{display:flex;gap:14px;justify-content:center;margin-top:38px}
+
+  /* ===== STICKER COLLAGE ===== */
+  .collage{position:relative;background:var(--paper);height:300px;max-width:1100px;margin:0 auto}
+  .sticker{position:absolute;font-family:var(--serif);font-size:22px;font-weight:500;padding:9px 18px;border-radius:7px;white-space:nowrap;box-shadow:0 6px 16px rgba(0,0,0,.1);transform:rotate(var(--rot));cursor:default}
+  .s1{background:var(--yellow);top:60px;left:8%;--rot:-7deg}
+  .s2{background:var(--pink);top:18px;left:34%;--rot:5deg}
+  .s3{background:var(--purple);color:#fff;top:70px;left:52%;--rot:-6deg}
+  .s4{background:var(--cyan);top:30px;right:6%;--rot:4deg}
+  .s5{background:var(--green);color:#fff;top:140px;left:24%;--rot:-2deg}
+  .s6{background:var(--orange);color:#fff;top:150px;right:16%;--rot:7deg}
+  .s7{background:var(--purple-hi);top:215px;left:12%;--rot:6deg}
+  /* settle into place when the collage scrolls in */
+  .collage.go .sticker{animation:settle .6s var(--e-quint) both}
+  .collage.go .s1{animation-delay:0s}.collage.go .s5{animation-delay:.07s}
+  .collage.go .s2{animation-delay:.14s}.collage.go .s7{animation-delay:.21s}
+  .collage.go .s3{animation-delay:.28s}.collage.go .s6{animation-delay:.35s}
+  .collage.go .s4{animation-delay:.42s}
+  @keyframes settle{from{opacity:0;transform:rotate(var(--rot)) translateY(30px) scale(.82)}to{opacity:1;transform:rotate(var(--rot)) translateY(0) scale(1)}}
+  .collage.go .sticker:hover{animation:wiggle .45s ease-in-out}
+  @keyframes wiggle{0%,100%{transform:rotate(var(--rot)) scale(1)}30%{transform:rotate(calc(var(--rot) + 5deg)) scale(1.06)}70%{transform:rotate(calc(var(--rot) - 5deg)) scale(1.06)}}
+  .collage .shape{position:absolute}
+  .collage .c-tri{top:120px;left:2%;width:0;height:0;border-left:34px solid transparent;border-right:34px solid transparent;border-bottom:60px solid var(--orange);transform:rotate(-10deg)}
+  .collage .c-cir{top:175px;left:42%;width:60px;height:60px;border-radius:50%;background:var(--green)}
+  .collage .c-hex{top:90px;right:2%;width:80px;height:80px;background:var(--purple);clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%)}
+
+  /* ===== FOOTER ===== */
+  footer{background:var(--dark);color:#fff;padding:54px 0 0;overflow:hidden}
+  .foot-in{max-width:var(--maxw);margin:0 auto;padding:0 28px;display:flex;align-items:center;gap:24px;flex-wrap:wrap}
+  .foot-soc{display:flex;gap:16px}
+  .foot-soc a{color:#fff;opacity:.85}
+  .foot-soc svg{width:18px;height:18px}
+  .foot-mid{margin-left:auto;display:flex;gap:22px;flex-wrap:wrap;font-size:13px;color:#9a9aa2}
+  .foot-mid a:hover{color:#fff}
+  .foot-copy{font-size:13px;color:#9a9aa2}
+  .mega{font-family:var(--serif);font-weight:600;text-align:center;font-size:clamp(120px,26vw,360px);line-height:.8;letter-spacing:-.03em;color:#fff;margin-top:36px;padding-bottom:8px;user-select:none}
+
+  /* ===== REVEAL FAMILIES ===== */
+  .reveal{opacity:0;transform:translateY(26px);transition:opacity .75s var(--e-quint),transform .75s var(--e-quint)}
+  .reveal.rv-left{transform:translateX(-42px)}
+  .reveal.rv-right{transform:translateX(42px)}
+  .reveal.rv-scale{transform:scale(.92)}
+  .reveal.in-view{opacity:1;transform:none}
+  /* clip-rise — colored feature panels wipe open */
+  .clip-rise{clip-path:inset(0 0 100% 0)}
+  .clip-rise.in-view{clip-path:inset(0 0 0 0);transition:clip-path 1s var(--e-expo)}
+  /* animated ring fill */
+  @property --p{syntax:'<number>';inherits:false;initial-value:0}
+  .ring{--p:0;background:conic-gradient(var(--green) calc(var(--p)*1%),#EDEDED 0)}
+  .ring.lit{--p:82;transition:--p 1.3s var(--e-quint)}
+  /* mega wordmark rises in */
+  .mega{transform:translateY(60px);opacity:0;transition:transform 1s var(--e-expo),opacity 1s}
+  .mega.in-view{transform:translateY(0);opacity:1}
+
+  @media(max-width:900px){
+    .nav-links{display:none}
+    .band-in{grid-template-columns:1fr;gap:18px}
+    .frow{grid-template-columns:1fr}
+    .frow.rev .f-text{order:0}
+    .f-text{padding:40px 30px}
+    .f-vis{min-height:340px;padding:30px 0}
+    .grid6{grid-template-columns:1fr;gap:30px}
+    .icons4{grid-template-columns:repeat(2,1fr);gap:38px 20px}
+    .trust-in{flex-direction:column;align-items:flex-start}
+    .trust-badges{margin-left:0}
+    .collage{height:auto;padding:30px 0;display:flex;flex-wrap:wrap;gap:12px;justify-content:center}
+    .sticker{position:static;transform:none!important}
+    .collage .shape{display:none}
+  }
+  @media(prefers-reduced-motion:reduce){
+    *{animation:none!important;transition:none!important}
+    .reveal{opacity:1;transform:none}
+    .clip-rise{clip-path:none}
+    .hl{background-size:100% 100%}
+    .doodle path{stroke-dashoffset:0}
+    .ring{--p:82}
+    .mega{opacity:1;transform:none}
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== NAV ===== -->
+<nav class="nav" id="nav">
+  <div class="nav-in">
+    <a href="#" class="brand"><img class="logo" src="assets/publick-icon.png" alt="Publick logo">Publick</a>
+    <div class="nav-links">
+      <a href="#suite">Product <svg class="car" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg></a>
+      <a href="#features">How it works <svg class="car" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg></a>
+      <a href="#privacy">Privacy</a>
+    </div>
+    <div class="nav-right">
+      <a href="#">Log in</a>
+      <a href="#">Student sign up</a>
+      <a href="#" class="nav-cta">See Publick</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ===== HERO ===== -->
+<header class="hero">
+  <svg class="doodle d1" viewBox="0 0 80 40" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M4 30C14 6 26 6 34 24S56 40 64 16"/></svg>
+  <svg class="doodle d2" viewBox="0 0 90 50" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M6 44c8-30 22-30 28-8s20 18 28-8"/><path d="M70 8l8 4-6 7"/></svg>
+  <svg class="doodle d3" viewBox="0 0 60 60" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M30 6c18 0 24 22 8 32S6 50 14 30 30 6 30 6Z"/></svg>
+  <svg class="doodle d4" viewBox="0 0 64 50" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M4 8l14 18M24 6l14 18M44 8l14 18"/></svg>
+  <div class="container">
+    <span class="eyebrow reveal" data-d="0"><span class="nw">NEW</span> Publick 2.0 — your AI counselor in private beta</span>
+    <h1 class="hero-title reveal" data-d="1">The <span class="hl p">AI</span> college suite that gets you <span class="hl g">in</span>.</h1>
+    <p class="sub reveal" data-d="3">Publick runs your chances, prep, applications, and essays as one connected system — replacing the tab-sprawl that keeps students guessing about where they really stand.</p>
+    <div class="cta-row reveal" data-d="4">
+      <a href="#" class="btn btn-dark">Join the waitlist <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M13 5l7 7-7 7"/></svg></a>
+      <a href="#features" class="btn btn-ghost">See how chances work</a>
+    </div>
+  </div>
+</header>
+
+<!-- ===== PRODUCT BAND ===== -->
+<section class="band">
+  <div class="grid-tex"></div>
+  <span class="blob b-green"></span>
+  <span class="blob b-cyan"></span>
+  <span class="blob b-orange"></span>
+  <div class="band-in">
+    <div class="pcard reveal">
+      <div class="pc-bar"><img class="lg" src="assets/publick-icon.png" alt=""><span class="ttl">My Chances</span><span class="tools"><i></i><i></i><i></i></span></div>
+      <div class="pc-body">
+        <div class="pc-h"><span class="t">10 schools · balanced list</span><span class="chip">Profile strength <b data-count="82">0</b></span></div>
+        <div class="row"><span class="sw" style="background:#D8344A">R</span><div class="bd"><div class="n">MIT</div><div class="s">Reach · +80 SAT → high reach</div></div><span class="pc" style="color:#D8344A" data-count="11" data-suffix="%">0</span></div>
+        <div class="row"><span class="sw" style="background:#B4791C">M</span><div class="bd"><div class="n">UC Berkeley</div><div class="s">Match · strong CS fit</div></div><span class="pc" style="color:#B4791C" data-count="47" data-suffix="%">0</span></div>
+        <div class="row"><span class="sw" style="background:#0C8A5E">S</span><div class="bd"><div class="n">UMass Amherst</div><div class="s">Safety · GPA above median</div></div><span class="pc" style="color:#0C8A5E" data-count="84" data-suffix="%">0</span></div>
+        <div class="pc-note"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 2v4M12 18v4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M2 12h4M18 12h4M4.9 19.1l2.8-2.8M16.3 7.7l2.8-2.8"/></svg><span class="tx"><b>Publick:</b> your list has 2 safeties. Add 1 more to keep it healthy.</span></div>
+      </div>
+    </div>
+    <div class="acard reveal" data-d="1">
+      <div class="ac-msg">
+        <div class="ac-from"><img class="av" src="assets/publick-icon.png" alt=""> Publick AI</div>
+        <div class="ac-txt">Here’s your plan for this week. Berkeley moved from reach to match — your essay draft pushed your profile strength to 82.</div>
+        <span class="ac-pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M9 12l2 2 4-4"/></svg> Draft Common App essay · 40%</span>
+        <span class="ac-pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V5M4 19h16M8 16v-5M12 16V8M16 16v-7"/></svg> SAT drill: algebra · 20 min</span>
+      </div>
+      <div class="ac-input">Ask Publick anything…<span class="send"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M13 5l7 7-7 7"/></svg></span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== STATEMENT ===== -->
+<section class="statement">
+  <div class="container">
+    <h2 class="reveal">Publick replaces guesswork with a single application system.</h2>
+  </div>
+</section>
+
+<!-- ===== FEATURE ROWS ===== -->
+<section id="features" class="container">
+
+  <!-- 1 -->
+  <div class="frow">
+    <div class="f-text reveal rv-left">
+      <span class="glyph" style="background:var(--purple)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="0.5" fill="currentColor"/></svg></span>
+      <h3>Honest odds, not wishful thinking</h3>
+      <p>Publick reads your GPA, scores, rigor, and activities against each school’s real admit data, then sorts every school into reach, match, or safety — and tells you exactly why.</p>
+    </div>
+    <div class="f-vis vis-purple clip-rise">
+      <div class="vis-tex"></div>
+      <div class="mini reveal rv-scale" data-d="3">
+        <div class="mh"><span class="t">Admit chance band</span><span class="c">live</span></div>
+        <div class="bar-row"><span class="lbl">UMass</span><div class="track"><span style="--w:84%;background:var(--green)"></span></div><span class="v">84%</span></div>
+        <div class="bar-row"><span class="lbl">UC Berkeley</span><div class="track"><span style="--w:47%;background:var(--yellow)"></span></div><span class="v">47%</span></div>
+        <div class="bar-row"><span class="lbl">MIT</span><div class="track"><span style="--w:11%;background:#D8344A"></span></div><span class="v">11%</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2 -->
+  <div class="frow rev">
+    <div class="f-text reveal rv-right">
+      <span class="glyph" style="background:var(--green)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 14l4-4 3 3 5-6"/></svg></span>
+      <h3>Real-time view of where you stand</h3>
+      <p>Every essay edit, test score, and new activity updates your profile strength immediately — so you always know your odds today, not after decisions come out.</p>
+    </div>
+    <div class="f-vis vis-green clip-rise">
+      <div class="vis-tex"></div>
+      <div class="mini reveal rv-scale" data-d="3">
+        <div class="mh"><span class="t">Profile strength</span><span class="c">updated now</span></div>
+        <div class="ring-wrap">
+          <div class="ring"><span class="num" data-count="82">0</span></div>
+          <div class="ring-meta">
+            <div class="t">On track for your matches</div>
+            <div class="s">+6 this week</div>
+            <div class="tags"><span class="tag ok">GPA strong</span><span class="tag ok">Scores on track</span><span class="tag warn">Spike needs depth</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3 -->
+  <div class="frow">
+    <div class="f-text reveal rv-left">
+      <span class="glyph" style="background:var(--orange)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></span>
+      <h3>A plan that adapts to you</h3>
+      <p>Publick builds a weekly plan from the SAT questions you actually miss and the deadlines that matter — ED, RD, FAFSA — so the whole process feels like a checklist, not a panic.</p>
+    </div>
+    <div class="f-vis vis-yellow clip-rise">
+      <div class="vis-tex"></div>
+      <div class="mini reveal rv-scale" data-d="3">
+        <div class="mh"><span class="t">SAT · target +150</span><span class="c">1330 → 1480</span></div>
+        <div class="bar-row"><span class="lbl">Inference</span><div class="track"><span style="--w:68%;background:#D8344A"></span></div><span class="v">68%</span></div>
+        <div class="bar-row"><span class="lbl">Linear eqns</span><div class="track"><span style="--w:54%;background:var(--orange)"></span></div><span class="v">54%</span></div>
+        <div class="bar-row"><span class="lbl">Grammar</span><div class="track"><span style="--w:38%;background:var(--green)"></span></div><span class="v">38%</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4 -->
+  <div class="frow rev">
+    <div class="f-text reveal rv-right">
+      <span class="glyph" style="background:var(--cyan)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></span>
+      <h3>Fewer tabs, one source of truth</h3>
+      <p>Chances, SAT plans, application checklists, essay prompts, and your AI counselor all draw from one profile — so nothing asks you twice and nothing slips through.</p>
+    </div>
+    <div class="f-vis vis-cyan clip-rise">
+      <div class="vis-tex"></div>
+      <div class="mini reveal rv-scale" data-d="3">
+        <div class="mh"><span class="t">Everything, synced</span><span class="c">1 profile</span></div>
+        <div class="sync"><span class="ic" style="background:var(--purple)">C</span><span class="nm">Chances · 10 schools</span><span class="st">synced</span></div>
+        <div class="sync"><span class="ic" style="background:var(--orange)">S</span><span class="nm">SAT prep · 3 drills queued</span><span class="st">synced</span></div>
+        <div class="sync"><span class="ic" style="background:var(--green)">E</span><span class="nm">Essays · Common App draft</span><span class="st">synced</span></div>
+        <div class="sync"><span class="ic" style="background:#B4791C">A</span><span class="nm">Applications · Berkeley ED 60%</span><span class="st">synced</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SUITE GRID ===== -->
+<section id="suite" class="suite">
+  <div class="container">
+    <div class="head reveal">
+      <h2>One suite for every part of applying</h2>
+      <p>Publick adapts to how students actually apply — no separate logins, spreadsheets, or coaches required.</p>
+    </div>
+    <div class="grid6">
+      <div class="gcard reveal">
+        <div class="shot vis-purple"><div class="vis-tex"></div><div class="glabel"><span class="gi" style="background:var(--purple)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/></svg></span>Reach · Match · Safety</div></div>
+        <h3>Chances &amp; school list</h3>
+        <p>Build a balanced list with honest admit-chance bands for every school, updated as your profile grows.</p>
+      </div>
+      <div class="gcard reveal" data-d="1">
+        <div class="shot vis-orange" style="background:var(--orange)"><div class="vis-tex"></div><div class="glabel"><span class="gi" style="background:var(--orange)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 19V5M4 19h16M8 16v-5M12 16V8M16 16v-7"/></svg></span>+150 target</div></div>
+        <h3>SAT &amp; ACT prep</h3>
+        <p>A weekly plan built from the questions you actually miss, with timed drills that target weak spots.</p>
+      </div>
+      <div class="gcard reveal" data-d="2">
+        <div class="shot vis-green"><div class="vis-tex"></div><div class="glabel"><span class="gi" style="background:var(--green)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></span>Berkeley ED · 60%</div></div>
+        <h3>Application builder</h3>
+        <p>Every requirement, supplement, and deadline tracked in one checklist — ED, EA, RD, and beyond.</p>
+      </div>
+      <div class="gcard reveal">
+        <div class="shot vis-pink" style="background:var(--pink)"><div class="vis-tex"></div><div class="glabel"><span class="gi" style="background:var(--pink)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg></span>Voice 9 · Cliché: low</div></div>
+        <h3>Essay coach</h3>
+        <p>Rubric feedback on voice, structure, and clichés — an editor, not a ghostwriter. It’s still your story.</p>
+      </div>
+      <div class="gcard reveal" data-d="1">
+        <div class="shot vis-cyan"><div class="vis-tex"></div><div class="glabel"><span class="gi" style="background:var(--cyan)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2Z"/></svg></span>Ask anything</div></div>
+        <h3>AI counselor</h3>
+        <p>A counselor that knows your whole profile — ask about fit, aid, or your next move, any time.</p>
+      </div>
+      <div class="gcard reveal" data-d="2">
+        <div class="shot vis-yellow"><div class="vis-tex"></div><div class="glabel"><span class="gi" style="background:var(--yellow)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></span>Saves $24k/yr</div></div>
+        <h3>Scholarships &amp; aid</h3>
+        <p>Compare cost, aid, and fit side by side so you can choose the offer that’s actually best for you.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== COMPLIANCE ===== -->
+<section id="privacy" class="comply">
+  <div class="container">
+    <h2 class="reveal">Built for students. Private by design.</h2>
+    <div class="icons4">
+      <div class="ic4 reveal">
+        <div class="art" style="background:var(--purple)"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg></div>
+        <p>You own every essay and word you write</p>
+      </div>
+      <div class="ic4 reveal" data-d="1">
+        <div class="art" style="background:var(--green)"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg></div>
+        <p>Every odd is explainable, never a black box</p>
+      </div>
+      <div class="ic4 reveal" data-d="2">
+        <div class="art" style="background:var(--yellow)"><svg viewBox="0 0 24 24" fill="none" stroke="#0B0B0C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg></div>
+        <p>Your data stays yours — never sold, ever</p>
+      </div>
+      <div class="ic4 reveal" data-d="3">
+        <div class="art" style="background:var(--orange)"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/><path d="M9 12l2 2 4-4"/></svg></div>
+        <p>FERPA-aware and encrypted by default</p>
+      </div>
+    </div>
+  </div>
+  <div class="trust">
+    <div class="trust-in reveal">
+      <span class="lab">Security and privacy you can trust</span>
+      <div class="trust-badges">
+        <span class="badge">FERPA-aware</span>
+        <span class="badge">SOC 2 (in progress)</span>
+        <span class="badge">AES-256</span>
+        <span class="badge">No data resale</span>
+        <span class="badge">Student-owned content</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== INTEGRATIONS ===== -->
+<section class="integ">
+  <div class="container">
+    <h2 class="reveal">Works with where you already apply</h2>
+    <p class="reveal">Publick sits alongside the tools you already use — pull in deadlines and requirements, and keep one source of truth as you apply.</p>
+  </div>
+  <div class="mwrap">
+    <div class="marquee">
+      <div class="ilogo"><span class="lmark" style="background:#2563EB"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg></span><span class="lname">Common&nbsp;App</span></div>
+      <div class="ilogo"><span class="lmark" style="background:#0EA5A4"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="12" r="5"/><circle cx="15" cy="12" r="5"/></svg></span><span class="lname">Coalition</span></div>
+      <div class="ilogo"><span class="lmark" style="background:#0B5FFF"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6c-2-1.4-5-1.4-7 0v12c2-1.4 5-1.4 7 0 2-1.4 5-1.4 7 0V6c-2-1.4-5-1.4-7 0z"/><path d="M12 6v12"/></svg></span><span class="lname">College&nbsp;Board</span></div>
+      <div class="ilogo"><span class="lmark" style="background:#0C8A5E"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v10"/><path d="M14.6 9.2C14 8.4 13 8 12 8c-1.4 0-2.5.7-2.5 1.9 0 2.6 5 1.3 5 4 0 1.2-1.1 2-2.5 2-1 0-2-.4-2.6-1.2"/></svg></span><span class="lname">FAFSA</span></div>
+      <div class="ilogo"><span class="lmark" style="background:#7C3AED"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M15.5 8.5l-2.2 4.8-4.8 2.2 2.2-4.8z"/></svg></span><span class="lname">Naviance</span></div>
+      <div class="ilogo"><span class="lmark" style="background:#2563EB"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg></span><span class="lname">Common&nbsp;App</span></div>
+      <div class="ilogo"><span class="lmark" style="background:#0EA5A4"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="12" r="5"/><circle cx="15" cy="12" r="5"/></svg></span><span class="lname">Coalition</span></div>
+      <div class="ilogo"><span class="lmark" style="background:#0B5FFF"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6c-2-1.4-5-1.4-7 0v12c2-1.4 5-1.4 7 0 2-1.4 5-1.4 7 0V6c-2-1.4-5-1.4-7 0z"/><path d="M12 6v12"/></svg></span><span class="lname">College&nbsp;Board</span></div>
+      <div class="ilogo"><span class="lmark" style="background:#0C8A5E"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v10"/><path d="M14.6 9.2C14 8.4 13 8 12 8c-1.4 0-2.5.7-2.5 1.9 0 2.6 5 1.3 5 4 0 1.2-1.1 2-2.5 2-1 0-2-.4-2.6-1.2"/></svg></span><span class="lname">FAFSA</span></div>
+      <div class="ilogo"><span class="lmark" style="background:#7C3AED"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M15.5 8.5l-2.2 4.8-4.8 2.2 2.2-4.8z"/></svg></span><span class="lname">Naviance</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FINAL CTA ===== -->
+<section class="final">
+  <div class="container">
+    <h2 class="reveal">See how Publick gets you in</h2>
+    <p class="reveal">If you’re done guessing about your chances and ready to put your applications on track, this is where to start. No credit card required.</p>
+    <div class="cta-row reveal">
+      <a href="#" class="btn btn-dark">Join the waitlist <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M13 5l7 7-7 7"/></svg></a>
+      <a href="#" class="btn btn-ghost">Book a walkthrough</a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== STICKER COLLAGE ===== -->
+<div class="collage">
+  <span class="shape c-tri"></span>
+  <span class="shape c-cir"></span>
+  <span class="shape c-hex"></span>
+  <span class="sticker s1">Reach schools</span>
+  <span class="sticker s2">Early Decision</span>
+  <span class="sticker s3">Supplemental Essays</span>
+  <span class="sticker s4">Financial Aid</span>
+  <span class="sticker s5">SAT &amp; ACT Prep</span>
+  <span class="sticker s6">Safety Schools</span>
+  <span class="sticker s7">Scholarships</span>
+</div>
+
+<!-- ===== FOOTER ===== -->
+<footer>
+  <div class="foot-in">
+    <div class="foot-soc">
+      <a href="#" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5A2.5 2.5 0 1 1 0 3.5a2.5 2.5 0 0 1 4.98 0zM0 8h5v16H0zM8 8h4.8v2.2h.07c.67-1.2 2.3-2.5 4.73-2.5C22.4 7.7 24 10 24 14.2V24h-5v-8.5c0-2-.04-4.7-2.9-4.7-2.9 0-3.35 2.2-3.35 4.5V24H8z"/></svg></a>
+      <a href="#" aria-label="X"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.9 2H22l-7.6 8.7L23.3 22h-7l-5.5-7.2L4.5 22H1.4l8.2-9.4L.9 2h7.2l5 6.6L18.9 2zm-2.4 18h1.9L7.6 3.9H5.6L16.5 20z"/></svg></a>
+      <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a>
+      <a href="#" aria-label="TikTok"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 3c.3 2.3 1.7 4 4 4.3V11c-1.5 0-3-.5-4-1.3V16a6 6 0 1 1-6-6v3.2A2.8 2.8 0 1 0 13 16V3h3z"/></svg></a>
+    </div>
+    <div class="foot-mid">
+      <a href="#">Privacy</a>
+      <a href="#">Terms</a>
+      <a href="#">Student data</a>
+      <a href="#">Careers</a>
+      <a href="#">Contact</a>
+    </div>
+    <div class="foot-copy">© 2026 Publick — All rights reserved</div>
+  </div>
+  <div class="mega">publick</div>
+</footer>
+
+<script>
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* count-up numbers */
+  function countUp(el){
+    const target = parseFloat(el.dataset.count);
+    const suffix = el.dataset.suffix || '';
+    if(reduce){ el.textContent = target + suffix; return; }
+    const dur = 1100, t0 = performance.now();
+    (function tick(now){
+      const k = Math.min(1,(now-t0)/dur);
+      const e = 1 - Math.pow(1-k,3);            // easeOutCubic
+      el.textContent = Math.round(target*e) + suffix;
+      if(k<1) requestAnimationFrame(tick); else el.textContent = target + suffix;
+    })(performance.now());
+  }
+
+  /* fire every scroll-triggered family for one element */
+  function trigger(el){
+    const d = el.getAttribute('data-d');
+    if(d) el.style.transitionDelay = (d*90)+'ms';
+    el.classList.add('in-view');
+    if(el.classList.contains('collage')) el.classList.add('go');
+    if(el.classList.contains('ring'))    el.classList.add('lit');
+    if(el.hasAttribute('data-count') && !el.dataset.done){ el.dataset.done = '1'; countUp(el); }
+  }
+
+  /* one observer; feature panels clip their children, so cascade from the row */
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(en=>{
+      if(!en.isIntersecting) return;
+      const el = en.target;
+      trigger(el);
+      if(el.classList.contains('frow'))
+        el.querySelectorAll('.reveal, .clip-rise, .ring, [data-count]').forEach(trigger);
+      io.unobserve(el);
+    });
+  },{threshold:0.18, rootMargin:'0px 0px -8% 0px'});
+
+  document.querySelectorAll('.reveal, .clip-rise, .mega, .collage, .ring, [data-count], .frow')
+    .forEach(el=>io.observe(el));
+
+  /* hero highlighter wipes in on load */
+  addEventListener('load', ()=>{
+    document.querySelectorAll('.hl').forEach(h=>h.classList.add('lit'));
+  });
+
+  /* nav elevates once you leave the top */
+  const nav = document.getElementById('nav');
+  let ticking = false;
+  addEventListener('scroll', ()=>{
+    if(ticking) return;
+    ticking = true;
+    requestAnimationFrame(()=>{
+      nav.classList.toggle('scrolled', scrollY > 24);
+      ticking = false;
+    });
+  }, {passive:true});
+</script>
+</body>
+</html>
